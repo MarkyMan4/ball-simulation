@@ -41,13 +41,18 @@ export const run = () => {
     let ballsAcross = parseInt(document.getElementById('balls-across-input').value);
     let ballsDown = parseInt(document.getElementById('balls-down-input').value);
     let mouseStrength = parseFloat(document.getElementById('mouse-strength-input').value);
+    let airFriction = parseFloat(document.getElementById('air-friction-input').value);
 
 
     engine = Engine.create({gravity: {x: 0, y: gravity}});
     runner = Runner.create();
 
     balls = Composites.stack(50, 50, ballsAcross, ballsDown, 5, 5, (x, y) => {
-        return Bodies.circle(x, y + (Math.random() * 50), radius, {restitution: bounce, density: 0.0001})
+        return Bodies.circle(x, y + (Math.random() * 50), radius, {
+            restitution: bounce, 
+            density: 0.0001, 
+            frictionAir: airFriction
+        })
     });
 
     mouse = Mouse.create(canvas);
@@ -127,7 +132,7 @@ const animate = () => {
     }
 
     if(running) {
-        animId = requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
     }
     else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
